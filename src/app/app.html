@@ -1,2 +1,2 @@
 <app-flor></app-flor>
-<app-grass></app-grass>
+<app-grass (load)="grass()?.start()" (end)="flor()?.start()"></app-grass>

@@ -1,4 +1,8 @@
-<div class="flower-scene">
+<div
+  class="flower-scene"
+  [class.flower-scene--animate]="isAnimating()"
+  (animationend)="onSceneAnimationEnd($event)"
+>
   <div class="flower-stem"></div>
   <div class="flower-petals"></div>
   <div class="flower-core"></div>

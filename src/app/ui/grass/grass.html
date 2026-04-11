@@ -3,5 +3,8 @@
     src="/grass.png"
     alt=""
     class="grass object-full object-cover w-full max-h-2/5 h-full absolute bottom-0"
+    [class.grass--animate]="isAnimating()"
+    (animationend)="end.emit()"
+    (load)="load.emit()"
   />
 </div>

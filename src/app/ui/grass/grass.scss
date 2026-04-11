@@ -1,5 +1,9 @@
 .grass {
   --enter-timing-func: cubic-bezier(0.15, 0.78, 0.3, 1);
+  transform: translateY(100%);
+}
+
+.grass--animate {
   animation: enter 0.5s var(--enter-timing-func) forwards;
 }
 

@@ -10,7 +10,22 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "skipTests": true,
+          "flat": false
+        },
+        "@schematics/angular:service": {
+          "skipTests": true,
+          "flat": false,
+          "type": "service"
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true,
+          "flat": false
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true,
+          "flat": false
         }
       },
       "root": "",
@@ -29,9 +44,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ]
+            "styles": ["src/styles.scss"]
           },
           "configurations": {
             "production": {

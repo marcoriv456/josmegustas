@@ -241,6 +241,9 @@ xmlns='http://www.w3.org/2000/svg'%3E\
   background-color: transparent;
   filter: var(--scene-drop-shadow);
   transform: translateY(var(--enter-distance));
+}
+
+.flower-scene--animate {
   animation: scene-enter var(--enter-timing-func) calc(var(--enter-duration) * var(--ams)) forwards;
 }
 
@@ -252,6 +255,9 @@ xmlns='http://www.w3.org/2000/svg'%3E\
   height: 402em;
   transform: translateX(-50%) scaleY(0);
   transform-origin: center bottom;
+}
+
+.flower-scene--animate .flower-stem {
   animation: stem-grow var(--stem-timing-func) calc(var(--stem-duration) * var(--ams)) forwards;
   animation-delay: calc(var(--animation-delay) * var(--ams));
 }
@@ -376,21 +382,21 @@ xmlns='http://www.w3.org/2000/svg'%3E\
 // ======================
 // === PETAL ANIMATIONS ===
 // ======================
-.flower-petals::before,
-.flower-petals::after,
-.flower-core::after {
+.flower-scene--animate .flower-petals::before,
+.flower-scene--animate .flower-petals::after,
+.flower-scene--animate .flower-core::after {
   animation: bloom var(--petal-timing-func) calc(var(--petal-duration) * var(--ams)) forwards;
 }
 
-.flower-petals::before {
+.flower-scene--animate .flower-petals::before {
   animation-delay: calc((var(--animation-delay) + var(--petal-1-delay)) * var(--ams));
 }
 
-.flower-petals::after {
+.flower-scene--animate .flower-petals::after {
   animation-delay: calc((var(--animation-delay) + var(--petal-2-delay)) * var(--ams));
 }
 
-.flower-core::after {
+.flower-scene--animate .flower-core::after {
   animation-delay: calc((var(--animation-delay) + var(--petal-3-delay)) * var(--ams));
 }
 
@@ -421,26 +427,25 @@ xmlns='http://www.w3.org/2000/svg'%3E\
 }
 
 @media (prefers-reduced-motion: reduce) {
-
-  .flower-scene,
-  .flower-stem,
-  .flower-petals::before,
-  .flower-petals::after,
-  .flower-core::after {
+  .flower-scene--animate,
+  .flower-scene--animate .flower-stem,
+  .flower-scene--animate .flower-petals::before,
+  .flower-scene--animate .flower-petals::after,
+  .flower-scene--animate .flower-core::after {
     animation: none;
   }
 
-  .flower-scene {
+  .flower-scene--animate {
     transform: translateY(0);
   }
 
-  .flower-stem {
+  .flower-scene--animate .flower-stem {
     transform: translateX(-50%) scaleY(1);
   }
 
-  .flower-petals::before,
-  .flower-petals::after,
-  .flower-core::after {
+  .flower-scene--animate .flower-petals::before,
+  .flower-scene--animate .flower-petals::after,
+  .flower-scene--animate .flower-core::after {
     transform: translate(-50%, -50%) rotate(0deg) scale(1);
   }
 }
