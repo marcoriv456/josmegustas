@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { Flor } from './ui/flor/flor';
+import { Grass } from './ui/grass/grass';
 
 @Component({
   selector: 'app-root',
-  imports: [Flor],
+  imports: [Flor, Grass],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

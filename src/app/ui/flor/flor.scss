@@ -183,10 +183,26 @@ xmlns='http://www.w3.org/2000/svg'%3E\
 :host {
   display: block;
   position: relative;
+  overflow: hidden;
   // Expose the same CSS custom properties the original used on <html>
   --zoom: 120;
   --animation-speed: 100;
   --animation-delay: 500ms;
+
+  --enter-duration: 1.25s;
+  --enter-distance: 120vh;
+  --enter-timing-func: cubic-bezier(0.15, 0.78, 0.3, 1);
+
+  --stem-duration: 1.1s;
+  --stem-timing-func: cubic-bezier(0.2, 0.85, 0.2, 1);
+  // --stem-color-dark: hsl(141, 58%, 25%);
+  // --stem-color-main: hsl(141, 52%, 34%);
+  // --stem-color-light: hsl(143, 46%, 43%);
+
+  --stem-color-dark: #006B26;
+  --stem-color-main: #219300;
+  --stem-color-light: #219300;
+  --stem-shadow: rgba(15, 57, 31, 0.26);
 
   --petal-duration: 1s;
   --petals-start-from: 50deg;
@@ -201,6 +217,8 @@ xmlns='http://www.w3.org/2000/svg'%3E\
   --petals-large-radius: 204em;
   --petals-mid-radius: 136em;
   --petals-small-radius: 82em;
+  --flower-center-x: calc(50% + var(--petals-offset));
+  --flower-center-y: calc(50% - var(--petals-offset));
 
   --unit: 1vmin;
   --available-screen-min: 665;
@@ -213,14 +231,61 @@ xmlns='http://www.w3.org/2000/svg'%3E\
 // === .flower-scene — replaces <html> + <body> shell ===
 // ======================================================
 .flower-scene {
-  height: 100%;
+  min-height: 100vh;
   width: 100%;
   position: relative;
+  overflow: hidden;
   padding: 0;
   margin: 0;
   font-size: calc(1 * var(--px));
   background-color: transparent;
   filter: var(--scene-drop-shadow);
+  transform: translateY(var(--enter-distance));
+  animation: scene-enter var(--enter-timing-func) calc(var(--enter-duration) * var(--ams)) forwards;
+}
+
+.flower-stem {
+  position: absolute;
+  left: var(--flower-center-x);
+  top: calc(var(--flower-center-y) + 12em);
+  width: 30em;
+  height: 402em;
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: center bottom;
+  animation: stem-grow var(--stem-timing-func) calc(var(--stem-duration) * var(--ams)) forwards;
+  animation-delay: calc(var(--animation-delay) * var(--ams));
+}
+
+.flower-stem::before,
+.flower-stem::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 999em;
+}
+
+.flower-stem::before {
+  background:
+    radial-gradient(85% 16% at 50% 3%, rgba(255, 255, 255, 0.3), transparent 65%) no-repeat 50% 0 / 80% 25em,
+    linear-gradient(90deg,
+      var(--stem-color-dark) 0%,
+      var(--stem-color-main) 24%,
+      var(--stem-color-light) 48%,
+      var(--stem-color-main) 71%,
+      var(--stem-color-dark) 100%);
+  box-shadow:
+    inset -2em 0 6em rgba(0, 0, 0, 0.22),
+    0 10em 16em var(--stem-shadow);
+}
+
+.flower-stem::after {
+  left: 42%;
+  right: 42%;
+  top: 16em;
+  bottom: 22em;
+  border-radius: 999em;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  opacity: 0.9;
 }
 
 .flower-petals::before,
@@ -231,8 +296,8 @@ xmlns='http://www.w3.org/2000/svg'%3E\
   background-repeat: no-repeat;
   filter: blur(0);
   transform: translate(-50%, -50%) rotate(var(--petals-start-from)) scale(0);
-  left: calc(50% + var(--petals-offset));
-  top: calc(50% - var(--petals-offset));
+  left: var(--flower-center-x);
+  top: var(--flower-center-y);
 }
 
 // =============================================
@@ -331,6 +396,51 @@ xmlns='http://www.w3.org/2000/svg'%3E\
 
 @keyframes bloom {
   to {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes scene-enter {
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes stem-grow {
+  0% {
+    transform: translateX(-50%) scaleY(0);
+  }
+
+  70% {
+    transform: translateX(-50%) scaleY(1.04);
+  }
+
+  100% {
+    transform: translateX(-50%) scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .flower-scene,
+  .flower-stem,
+  .flower-petals::before,
+  .flower-petals::after,
+  .flower-core::after {
+    animation: none;
+  }
+
+  .flower-scene {
+    transform: translateY(0);
+  }
+
+  .flower-stem {
+    transform: translateX(-50%) scaleY(1);
+  }
+
+  .flower-petals::before,
+  .flower-petals::after,
+  .flower-core::after {
     transform: translate(-50%, -50%) rotate(0deg) scale(1);
   }
 }

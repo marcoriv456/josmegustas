@@ -1,0 +1,14 @@
+.grass {
+  --enter-timing-func: cubic-bezier(0.15, 0.78, 0.3, 1);
+  animation: enter 0.5s var(--enter-timing-func) forwards;
+}
+
+@keyframes enter {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
