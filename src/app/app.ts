@@ -17,11 +17,4 @@ export class App implements AfterViewInit {
   ngAfterViewInit(): void {
     this.grass()?.start();
   }
-
-  onGrassLoad(): void {
-    this.grass()?.start();
-  }
-  onGrassEnd(): void {
-    this.flor()?.start();
-  }
 }
