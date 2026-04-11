@@ -1,1 +1,6 @@
+@use "tailwindcss";
 
+
+@theme {
+  --color-flor: var(--color-red-800);
+}

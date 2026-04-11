@@ -10,11 +10,20 @@ $small-petals-count: 8;
 // ===========================
 // === COLORS FOR PETALS ===
 // ===========================
-$large-petal-color: #ffcc3b;
-$mid-petal-color-1: #ffb534;
-$mid-petal-color-2: #ff8f2c;
-$small-petal-color: #ffd234;
-$petal-root-color: #d06500;
+
+
+
+// $large-petal-color: #ffcc3b;
+// $mid-petal-color-1: #ffb534;
+// $mid-petal-color-2: #ff8f2c;
+// $small-petal-color: #ffd234;
+// $petal-root-color: #d06500;
+
+$large-petal-color: #ff6fa3; // main pink (was bright yellow)
+$mid-petal-color-1: #ff5c8a; // slightly deeper pink
+$mid-petal-color-2: #ff3d7a; // more saturated / darker pink
+$small-petal-color: #ff85b5; // lighter pink highlight
+$petal-root-color: #b3004b; // deep magenta (was orange root)
 
 // =====================================================
 // === DIVISION WRAPPER (Dart Sass backwards compat) ===
