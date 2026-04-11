@@ -1,10 +1,12 @@
 import { AfterViewInit, Component, signal, viewChild } from '@angular/core';
 import { Flor } from './ui/flor/flor';
+import { Gradient } from './ui/gradient/gradient';
 import { Grass } from './ui/grass/grass';
+import { Particles } from './ui/particles/particles';
 
 @Component({
   selector: 'app-root',
-  imports: [Flor, Grass],
+  imports: [Flor, Grass, Particles, Gradient],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
