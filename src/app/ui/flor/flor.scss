@@ -1,0 +1,466 @@
+@use 'sass:math';
+@use 'sass:color';
+
+// =====================
+// === PETAL GEOMETRY ===
+// =====================
+$large-petals-count: 12;
+$small-petals-count: 8;
+
+// ===========================
+// === COLORS FOR PETALS ===
+// ===========================
+$large-petal-color: #ffcc3b;
+$mid-petal-color-1: #ffb534;
+$mid-petal-color-2: #ff8f2c;
+$small-petal-color: #ffd234;
+$petal-root-color: #d06500;
+
+// =====================================================
+// === DIVISION WRAPPER (Dart Sass backwards compat) ===
+// =====================================================
+@function devide($n, $dn) {
+  @return math.div($n, $dn);
+}
+
+// ===========================
+// === CONVERT HEX → rgb() ===
+// ===========================
+@function rgb-color($color) {
+  $r: color.red($color);
+  $g: color.green($color);
+  $b: color.blue($color);
+  @return 'rgb(#{$r},#{$g},#{$b})';
+}
+
+// =================================
+// === N-GON CLIP-PATH GENERATOR ===
+// =================================
+@function generate-polygon($n) {
+  $theta: devide(2 * math.$pi, $n);
+  $point-array: null;
+
+  @for $i from 1 through $n {
+    $a: $theta * $i;
+    $x: 50% + 50% * math.sin($a);
+    $y: 50% + 50% * math.cos($a);
+    $point-array: $point-array, #{$x}25 #{$y}25;
+  }
+
+  @return polygon($point-array);
+}
+
+// =============================
+// === INDEXED-DIV GENERATOR ===
+// =============================
+@function generate-idivs($n) {
+  $str: null;
+
+  @for $i from 0 to $n {
+    $str: $str + "%3Cdiv style='--i:#{$i}'%3E%3C/div%3E";
+  }
+
+  @return $str;
+}
+
+// ========================
+// === LEAF-ROOT GRADIENT ===
+// ========================
+@function leaf-root($angle: 130deg) {
+  @return linear-gradient($angle,
+    #fff0 0,
+    #fff0 calc(50% - 3em),
+    var(--color-leaf-root) 50%,
+    #fff0 calc(50% + 1em),
+    #fff0 100%);
+}
+
+// ====================================================
+// === PLACE PETALS — squares on a circular path    ===
+// ====================================================
+@function place-petals($n,
+  $size-var,
+  $ratio-var,
+  $fill,
+  $rotate-start: 45deg,
+  $start: 0.5) {
+  $theta: devide(2 * math.$pi, $n);
+  $shift: $theta * $start;
+  $layers: null;
+
+  @for $i from 1 through $n {
+    $angle: (
+      $i * $theta) + $shift;
+    $x: calc(50% + var(#{$ratio-var}) * #{math.cos($angle)}
+    );
+  $y: calc(50% + var(#{$ratio-var}) * #{math.sin($angle)});
+
+  $layer-image: url("data:image/svg+xml,\
+%3Csvg viewBox='0 0 100 100' width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E\
+%3CforeignObject width='100%25' height='100%25'%3E\
+%3Cdiv xmlns='http://www.w3.org/1999/xhtml'%3E%3Cdiv class='A'%3E%3C/div%3E%3C/div%3E\
+%3Cstyle%3E\
+.A{\
+position:absolute;left:50px;top:50px;\
+width:70px;height:70px;border-radius:8%25;\
+transform:translate(-50%25,-50%25) rotate(#{$rotate-start}) rotate(#{$angle}rad);\
+background:#{rgb-color($fill)};\
+}\
+%3C/style%3E%3C/foreignObject%3E%3C/svg%3E");
+
+  $this-layer: $layer-image no-repeat scroll $x $y / var(#{$size-var}) var(#{$size-var});
+  $layers: $layers, $this-layer;
+}
+
+@return $layers;
+}
+
+// ========================================================
+// === CREATE SHUTTER — camera-iris shape via SVG/HTML  ===
+// ========================================================
+@function create-shutter($n, $size: 25, $thickness: 1, $color: black, $area) {
+  $grid: 1000;
+  $multiplier: $grid * 0.01;
+  $shift: 0.25;
+
+  @if $n % 2==0 {
+    $shift: 0.5;
+  }
+
+  $rotate: devide(360, $n) * $shift;
+  $match: $rotate * -1;
+
+  @if $n % 4==0 {
+    $match: 0;
+  }
+
+  @if $n ==3 {
+    $match: 90;
+  }
+
+  $wrapper: url("data:image/svg+xml,\
+%3Csvg viewBox='0 0 #{$grid} #{$grid}' \
+width='#{$grid}' height='#{$grid}' \
+xmlns='http://www.w3.org/2000/svg'%3E\
+%3CforeignObject width='100%' height='100%'%3E\
+%3Cdiv xmlns='http://www.w3.org/1999/xhtml'%3E\
+%3Cdiv class='c' style='--n:#{$n}'%3E#{generate-idivs($n)}%3C/div%3E\
+%3C/div%3E\
+%3Cstyle%3E\
+.c{\
+	--r:#{$size * $multiplier}px;\
+	--j:calc(360 / var(--n));\
+	--b:calc((var(--j) * 0.5 + 90) * 1deg);\
+	--s:#{$rotate}deg;\
+	--c:translate(-50%25,-50%25);\
+	transform:var(--c) rotate(var(--s));\
+	width:100%25;height:100%25;\
+	border-radius:50%25;\
+	overflow:hidden;\
+}\
+.c, .c::before, .c div{\
+	position:absolute;left:50%25;top:50%25;\
+}\
+.c::before{\
+	content:'';padding:var(--r);transform:var(--c) rotate(#{$match}deg);\
+	clip-path:#{generate-polygon($n)};\
+}\
+.c div{\
+	--a:calc(var(--j) * var(--i) * 1deg);\
+	width:#{$grid}px;height:#{$thickness * $multiplier}px;\
+	transform:var(--c) rotate(var(--a)) translate(calc(var(--r) * -1)) rotate(var(--b)) var(--c);\
+}\
+.c::before, .c div{\
+	background:#{rgb-color($color)};\
+}\
+%3C/style%3E\
+%3C/foreignObject%3E\
+%3C/svg%3E");
+
+  @return $wrapper no-repeat scroll center center / #{$area} #{$area};
+}
+
+// =============================================
+// === COMPONENT HOST — replaces <html> root ===
+// =============================================
+:host {
+  display: block;
+  position: relative;
+  // Expose the same CSS custom properties the original used on <html>
+  --zoom: 120;
+  --animation-speed: 100;
+  --animation-delay: 500ms;
+
+  --leaf-duration: 1s;
+  --leafs-start-from: 100deg;
+  --leaf-1-delay: 500ms;
+  --leaf-2-delay: 580ms;
+  --leaf-3-delay: 600ms;
+  --leaf-timing-func: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+
+  --petal-duration: 1s;
+  --petals-start-from: 50deg;
+  --petal-1-delay: 0ms;
+  --petal-2-delay: 100ms;
+  --petal-3-delay: 200ms;
+  --petal-timing-func: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+  --color-leaf: hsl(175, 30%, 31%);
+  --color-leaf-root: hsl(113, 21%, 51%);
+  --scene-drop-shadow: drop-shadow(11em 17em 27em rgba(0, 0, 0, 0.37));
+
+  --petals-offset: 36em;
+  --petals-large-radius: 204em;
+  --petals-mid-radius: 136em;
+  --petals-small-radius: 82em;
+
+  --unit: 1vmin;
+  --available-screen-min: 665;
+  --px: calc(var(--zoom) * (var(--unit) / var(--available-screen-min)));
+
+  --ams: calc(100 / var(--animation-speed));
+}
+
+// ======================================================
+// === .flower-scene — replaces <html> + <body> shell ===
+// ======================================================
+.flower-scene {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  font-size: calc(1 * var(--px));
+  background-color: transparent;
+  filter: var(--scene-drop-shadow);
+}
+
+// =========================================================
+// === Shared rules for all pseudo-element "canvases"    ===
+// =========================================================
+.flower-leaves::before,
+.flower-leaves::after,
+.flower-core::before {
+  content: '';
+  position: absolute;
+  background-repeat: no-repeat;
+  filter: blur(0); // GPU hint — keeps animations smooth in Chrome
+  transform-origin: right top;
+  background-size: 100% 100%;
+  background-color: var(--color-leaf);
+  box-shadow: inset 0 0 12em 10em var(--color-leaf);
+}
+
+.flower-petals::before,
+.flower-petals::after,
+.flower-core::after {
+  content: '';
+  position: absolute;
+  background-repeat: no-repeat;
+  filter: blur(0);
+  transform: translate(-50%, -50%) rotate(var(--petals-start-from)) scale(0);
+  left: calc(50% + var(--petals-offset));
+  top: calc(50% - var(--petals-offset));
+}
+
+// =================================
+// === LEAVES (.flower-leaves)   ===
+// === was: head::before/after   ===
+// ===       html::before        ===
+// =================================
+
+// was head::before
+.flower-leaves::before {
+  left: calc(50% - 65em);
+  top: calc(50% + 109em);
+  transform: translate(-50%, -50%) scale(0) rotate(var(--leafs-start-from)) rotate(80deg) skewX(6deg) skewY(-30deg);
+  width: 83em;
+  height: 128em;
+  border-radius: 50% 9% 32% 4%;
+  background-image:
+    leaf-root(2deg), leaf-root(2deg), leaf-root(2deg),
+    leaf-root(92deg), leaf-root(92deg), leaf-root(92deg),
+    leaf-root();
+  background-position:
+    -56em 30em, -34em 3em, -14em -22em,
+    -16em 96em, 6em 68em, 27em 43em,
+    0 15em;
+}
+
+// was head::after
+.flower-leaves::after {
+  left: calc(50% - 94em);
+  top: calc(50% + 98em);
+  transform: translate(-50%, -50%) scale(0) rotate(var(--leafs-start-from)) rotate(-44deg) skewY(-30deg);
+  width: 83em;
+  height: 96em;
+  border-radius: 25% 9% 32% 4%;
+  background-image:
+    leaf-root(-93deg), leaf-root(-93deg), leaf-root(-93deg),
+    leaf-root(-1deg), leaf-root(-1deg), leaf-root(-1deg),
+    leaf-root();
+  background-position:
+    -12em 64em, 7em 41em, 28em 16em,
+    -56em 16em, -36em -8em, -15em -32em,
+    0 0;
+}
+
+// was html::before
+.flower-core::before {
+  left: calc(50% - 120em);
+  top: calc(50% + 123em);
+  transform: translate(-50%, -50%) scale(0) rotate(var(--leafs-start-from)) skewX(-15deg) skewY(-18deg);
+  width: 113em;
+  height: 121em;
+  border-radius: 24% 9% 27% 7%;
+  background-image:
+    leaf-root(-90deg), leaf-root(-90deg), leaf-root(-90deg),
+    leaf-root(2deg), leaf-root(1deg), leaf-root(0deg),
+    leaf-root(133deg);
+  background-position:
+    -19em 79em, 9em 50.4em, 35em 21.4em,
+    -21em -41.6em, -49em -11em, -74em 18em,
+    0 0;
+}
+
+// =============================================
+// === LARGE PETALS (.flower-petals::before) ===
+// === was: body::before                     ===
+// =============================================
+.flower-petals::before {
+  padding: var(--petals-large-radius);
+
+  --pointer-size: 73em;
+  --pointer-ratio: 46%;
+  --hand-size: 104em;
+  --hand-ratio: 39.3%;
+  --fill-size: 220em;
+  --shine-size: 325em;
+  --shine-color: rgba(255, 255, 255, 0.29);
+  --fill: linear-gradient(#{$large-petal-color} 0 0) no-repeat scroll 50% 50% / var(--fill-size) var(--fill-size);
+  --shine: radial-gradient(circle at center, var(--shine-color) 50%, transparent 72%) no-repeat 50% 50% / var(--shine-size) var(--shine-size);
+
+  filter: drop-shadow(-25em 10em 7em rgba(254, 136, 10, 0.1));
+  background:
+    var(--shine),
+    var(--fill),
+    place-petals($large-petals-count, '--hand-size', '--hand-ratio', $large-petal-color, 0, 0.5),
+    place-petals($large-petals-count, '--pointer-size', '--pointer-ratio', $large-petal-color);
+}
+
+// ============================================
+// === MID PETALS (.flower-petals::after)   ===
+// === was: body::after                     ===
+// ============================================
+.flower-petals::after {
+  padding: var(--petals-mid-radius);
+
+  --pointer-size: 56em;
+  --pointer-ratio: 49%;
+  --hand-size: 77em;
+  --hand-ratio: 40.3%;
+  --fill-size: 107em;
+  --fill: linear-gradient(#{$mid-petal-color-2} 0 0) no-repeat 50% 50% / var(--fill-size) var(--fill-size);
+
+  background:
+    var(--fill),
+    place-petals($large-petals-count, '--pointer-size', '--pointer-ratio', $mid-petal-color-1, 45deg, 0),
+    place-petals($large-petals-count, '--hand-size', '--hand-ratio', $mid-petal-color-2, 0, 0);
+}
+
+// =============================================
+// === SMALL PETALS / CORE (.flower-core::after) ===
+// === was: html::after                          ===
+// =============================================
+.flower-core::after {
+  padding: var(--petals-small-radius);
+
+  --pointer-size: 39em;
+  --pointer-ratio: 48.2%;
+  --hand-size: 54em;
+  --hand-ratio: 39.4%;
+  --fill-size: 49em;
+  --shine-size: 130em;
+  --circle-1-size: 100em;
+  --shutter-size: 70em;
+  --fill: linear-gradient(#{$mid-petal-color-2} 0 0) no-repeat 50% 50% / var(--fill-size) var(--fill-size);
+  --shine: radial-gradient(circle at center, #{$mid-petal-color-2} 42%, transparent 72%) no-repeat 50% 50% / var(--shine-size) var(--shine-size);
+  --circle-1: radial-gradient(circle at center, #{$small-petal-color} 48%, transparent 50%) no-repeat 50% 50% / var(--circle-1-size) var(--circle-1-size);
+
+  background:
+    create-shutter(10, 20, 1, $petal-root-color, var(--shutter-size)),
+    var(--circle-1),
+    var(--shine),
+    var(--fill),
+    place-petals($small-petals-count, '--hand-size', '--hand-ratio', $small-petal-color, 0, 0),
+    place-petals($small-petals-count, '--pointer-size', '--pointer-ratio', $small-petal-color, 45deg, 0);
+}
+
+// ======================
+// === PETAL ANIMATIONS ===
+// ======================
+.flower-petals::before,
+.flower-petals::after,
+.flower-core::after {
+  animation: bloom var(--petal-timing-func) calc(var(--petal-duration) * var(--ams)) forwards;
+}
+
+.flower-petals::before {
+  animation-delay: calc((var(--animation-delay) + var(--petal-1-delay)) * var(--ams));
+}
+
+.flower-petals::after {
+  animation-delay: calc((var(--animation-delay) + var(--petal-2-delay)) * var(--ams));
+}
+
+.flower-core::after {
+  animation-delay: calc((var(--animation-delay) + var(--petal-3-delay)) * var(--ams));
+}
+
+@keyframes bloom {
+  to {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+}
+
+// ======================
+// === LEAF ANIMATIONS ===
+// ======================
+.flower-leaves::before,
+.flower-leaves::after,
+.flower-core::before {
+  animation: var(--leaf-timing-func) calc(var(--leaf-duration) * var(--ams)) forwards;
+}
+
+.flower-leaves::before {
+  animation-name: leaf1;
+  animation-delay: calc((var(--animation-delay) + var(--leaf-1-delay)) * var(--ams));
+}
+
+.flower-leaves::after {
+  animation-name: leaf2;
+  animation-delay: calc((var(--animation-delay) + var(--leaf-2-delay)) * var(--ams));
+}
+
+.flower-core::before {
+  animation-name: leaf3;
+  animation-delay: calc((var(--animation-delay) + var(--leaf-3-delay)) * var(--ams));
+}
+
+@keyframes leaf1 {
+  to {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg) rotate(80deg) skewX(6deg) skewY(-30deg);
+  }
+}
+
+@keyframes leaf2 {
+  to {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg) rotate(-44deg) skewY(-30deg);
+  }
+}
+
+@keyframes leaf3 {
+  to {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg) skewX(-15deg) skewY(-18deg);
+  }
+}
