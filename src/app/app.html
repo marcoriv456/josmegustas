@@ -1,16 +1,27 @@
-<div class="relative w-screen h-screen overflow-hidden">
-  @if (active() == 1) {
-    <app-message-1></app-message-1>
-    <app-particles class="absolute -z-100 top-0 left-0" [options]="flowerParticlesConfig"></app-particles>
+<div class="app-scroll-track">
+  <div #stageOneSpacer data-stage="1" class="app-spacer"></div>
+
+  @if (secondSpacerVisible()) {
+    <div #stageTwoSpacer data-stage="2" class="app-spacer"></div>
   }
-  @if (active() == 2) {
-    <app-grass
-      class="brightness-70 z-200 absolute top-0"
-      (load)="grass()?.start()"
-      (end)="flor()?.start()"
-    ></app-grass>
-    <app-flor class="brightness-70 z-100"></app-flor>
-    <app-particles class="absolute -z-100 top-0" [options]="nightParticlesConfig"></app-particles>
-    <app-gradient class="absolute -z-200 top-0"></app-gradient>
+</div>
+
+<div class="app-stage">
+  <div class="stage-1" [class.stage-1--hidden]="active() === 2">
+    <app-message-1 (end)="onMessageEnd()"></app-message-1>
+    <app-particles class="absolute -z-100 top-0 left-0" [options]="flowerParticlesConfig"></app-particles>
+  </div>
+
+  @if (active() === 2) {
+    <div class="stage-2">
+      <app-grass
+        class="brightness-70 z-200 absolute top-0"
+        (load)="grass()?.start()"
+        (end)="flor()?.start()"
+      ></app-grass>
+      <app-flor class="brightness-70 z-100"></app-flor>
+      <app-particles class="absolute -z-99 top-0" [options]="nightParticlesConfig"></app-particles>
+      <app-gradient class="absolute -z-200 top-0"></app-gradient>
+    </div>
   }
 </div>
