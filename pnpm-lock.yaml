@@ -32,6 +32,15 @@ importers:
       '@tsparticles/engine':
         specifier: ^3.9.1
         version: 3.9.1
+      '@tsparticles/plugin-emitters':
+        specifier: ^3.9.1
+        version: 3.9.1
+      '@tsparticles/plugin-interactivity':
+        specifier: 4.0.0-alpha.4
+        version: 4.0.0-alpha.4
+      '@tsparticles/shape-image':
+        specifier: ^3.9.1
+        version: 3.9.1
       '@tsparticles/updater-opacity':
         specifier: ^3.9.1
         version: 3.9.1
@@ -1425,6 +1434,9 @@ packages:
   '@tsparticles/engine@3.9.1':
     resolution: {integrity: sha512-DpdgAhWMZ3Eh2gyxik8FXS6BKZ8vyea+Eu5BC4epsahqTGY9V3JGGJcXC6lRJx6cPMAx1A0FaQAojPF3v6rkmQ==}
 
+  '@tsparticles/engine@4.0.0-alpha.4':
+    resolution: {integrity: sha512-VrzeBhZYFKAjOfKVplZE1vXJCBB5MwTiGimreO9lVu23OoZXe3sCUY4XVwRNG7pA4DusK8kxhCvAZZ19+JxZ+w==}
+
   '@tsparticles/interaction-external-attract@3.9.1':
     resolution: {integrity: sha512-5AJGmhzM9o4AVFV24WH5vSqMBzOXEOzIdGLIr+QJf4fRh9ZK62snsusv/ozKgs2KteRYQx+L7c5V3TqcDy2upg==}
 
@@ -1493,6 +1505,9 @@ packages:
 
   '@tsparticles/plugin-hsl-color@3.9.1':
     resolution: {integrity: sha512-jJd1iGgRwX6eeNjc1zUXiJivaqC5UE+SC2A3/NtHwwoQrkfxGWmRHOsVyLnOBRcCPgBp/FpdDe6DIDjCMO715w==}
+
+  '@tsparticles/plugin-interactivity@4.0.0-alpha.4':
+    resolution: {integrity: sha512-xmMWPb2+J29e6Swt7miQWEQNeq7xF0Lj3Dyb5/zZyIy8grxtelQAEpgZaJVeGiz5ky6YQihnlORYk67xCSyEmQ==}
 
   '@tsparticles/plugin-rgb-color@3.9.1':
     resolution: {integrity: sha512-SBxk7f1KBfXeTnnklbE2Hx4jBgh6I6HOtxb+Os1gTp0oaghZOkWcCD2dP4QbUu7fVNCMOcApPoMNC8RTFcy9wQ==}
@@ -4189,6 +4204,8 @@ snapshots:
 
   '@tsparticles/engine@3.9.1': {}
 
+  '@tsparticles/engine@4.0.0-alpha.4': {}
+
   '@tsparticles/interaction-external-attract@3.9.1':
     dependencies:
       '@tsparticles/engine': 3.9.1
@@ -4282,6 +4299,10 @@ snapshots:
   '@tsparticles/plugin-hsl-color@3.9.1':
     dependencies:
       '@tsparticles/engine': 3.9.1
+
+  '@tsparticles/plugin-interactivity@4.0.0-alpha.4':
+    dependencies:
+      '@tsparticles/engine': 4.0.0-alpha.4
 
   '@tsparticles/plugin-rgb-color@3.9.1':
     dependencies:

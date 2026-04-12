@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, signal, viewChild } from '@angular/core';
+import { flowerParticlesConfig } from './core/flower-particles.config';
+import { nightParticlesConfig } from './core/night-particles.config';
 import { Flor } from './ui/flor/flor';
 import { Gradient } from './ui/gradient/gradient';
 import { Grass } from './ui/grass/grass';
@@ -22,4 +24,7 @@ export class App implements AfterViewInit {
   ngAfterViewInit(): void {
     this.grass()?.start();
   }
+
+  nightParticlesConfig = nightParticlesConfig;
+  flowerParticlesConfig = flowerParticlesConfig;
 }
