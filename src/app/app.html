@@ -7,13 +7,15 @@
 </div>
 
 <div class="app-stage">
-  <div class="stage-1" [class.stage-1--hidden]="active() === 2">
-    <app-message-1 (end)="onMessageEnd()"></app-message-1>
-    <app-particles class="absolute -z-100 top-0 left-0" [options]="flowerParticlesConfig"></app-particles>
+  @if (active() === 1) {
+  <div class="stage-1 z-300">
+    <app-message-1 (end)="onMessageEnd()" [runAnim]="!stage1Shown()"></app-message-1>
+    <app-particles #particles1 class="absolute -z-100 top-0 left-0" [options]="flowerParticlesConfig"></app-particles>
   </div>
-
+  }
   @if (active() === 2) {
     <div class="stage-2">
+      <app-message-2 class="z-300 absolute top-0" (end)="onStage2End()"></app-message-2>
       <app-grass
         class="brightness-70 z-200 absolute top-0"
         (load)="grass()?.start()"
@@ -22,6 +24,14 @@
       <app-flor class="brightness-70 z-100"></app-flor>
       <app-particles class="absolute -z-99 top-0" [options]="nightParticlesConfig"></app-particles>
       <app-gradient class="absolute -z-200 top-0"></app-gradient>
+      @if(stage2Ended()) {
+
+      <div
+        class="z-400 absolute left-1/2 -translate-x-1/2 bottom-20 text-lg text-center font-simple text-gray-400 fade"
+      >
+        <span> Buenas noches preciosa <3</span>
+      </div>
+      }
     </div>
   }
 </div>

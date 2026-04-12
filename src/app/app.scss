@@ -26,9 +26,26 @@
 
 .stage-1 {
   opacity: 1;
-  transition: opacity 250ms ease;
+  animation: fade-in 250ms ease;
 }
 
-.stage-1--hidden {
-  opacity: 0;
+
+.stage-2 {
+  animation: fade-in 250ms ease;
+}
+
+;
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fade {
+  animation: fade-in 1s ease both;
 }

@@ -40,4 +40,10 @@ export class Particles implements AfterViewInit {
     this.#container?.destroy();
     this.#container = undefined;
   }
+
+  refresh(): void {
+    console.log('refreshing');
+    this.#container?.refresh();
+    this.#container?.reset(this.options());
+  }
 }

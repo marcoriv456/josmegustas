@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, effect, input, OnDestroy, output, signal } from '@angular/core';
 
 @Component({
-  selector: 'app-message-1',
+  selector: 'app-message-2',
   imports: [],
-  templateUrl: './message-1.html',
-  styleUrl: './message-1.scss',
+  templateUrl: './message-2.html',
+  styleUrl: './message-2.scss',
 })
-export class Message1 implements AfterViewInit, OnDestroy {
+export class Message2 implements AfterViewInit, OnDestroy {
   readonly end = output();
   readonly runAnim = input<boolean>(true);
   readonly step = signal(0);
@@ -18,10 +18,10 @@ export class Message1 implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.intervalRef = setInterval(() => {
       this.step.update((s) => s + 1);
-      if (this.step() > 5) {
+      if (this.step() > 3) {
         this.end.emit();
       }
-    }, 1000);
+    }, 500);
   }
 
   ngOnDestroy(): void {
