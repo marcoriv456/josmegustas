@@ -9,8 +9,8 @@
 <div class="app-stage">
   @if (active() === 1) {
   <div class="stage-1 z-300">
-    <app-message-1 (end)="onMessageEnd()" [runAnim]="!stage1Shown()"></app-message-1>
-    <app-particles #particles1 class="absolute -z-100 top-0 left-0" [options]="flowerParticlesConfig"></app-particles>
+    <app-message-1 #message1 (end)="onMessageEnd()" [runAnim]="!stage1Shown()"></app-message-1>
+    <app-particles #particles1 (ready)="message1.start()" class="absolute -z-100 top-0 left-0" [options]="flowerParticlesConfig"></app-particles>
   </div>
   }
   @if (active() === 2) {

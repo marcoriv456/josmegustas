@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, input, NgZone } from '@angular/core';
+import { AfterViewInit, Component, inject, input, NgZone, output } from '@angular/core';
 import { tsParticles, type Container, type ISourceOptions } from '@tsparticles/engine';
 import { loadEmittersPlugin } from '@tsparticles/plugin-emitters';
 import { loadImageShape } from '@tsparticles/shape-image';
@@ -13,6 +13,7 @@ import { loadFull } from 'tsparticles';
 export class Particles implements AfterViewInit {
   readonly id = 'particle-container';
   readonly options = input.required<ISourceOptions>();
+  readonly ready = output<void>();
 
   #container: Container | undefined;
 
@@ -33,6 +34,7 @@ export class Particles implements AfterViewInit {
         id: this.id,
         options: this.options(),
       });
+      this.ready.emit();
     });
   }
 
