@@ -19,11 +19,17 @@ $small-petals-count: 8;
 // $small-petal-color: #ffd234;
 // $petal-root-color: #d06500;
 
-$large-petal-color: #ff6fa3; // main pink (was bright yellow)
-$mid-petal-color-1: #ff5c8a; // slightly deeper pink
-$mid-petal-color-2: #ff3d7a; // more saturated / darker pink
-$small-petal-color: #ff85b5; // lighter pink highlight
-$petal-root-color: #b3004b; // deep magenta (was orange root)
+// $large-petal-color: #ff6fa3; // main pink (was bright yellow)
+// $mid-petal-color-1: #ff5c8a; // slightly deeper pink
+// $mid-petal-color-2: #ff3d7a; // more saturated / darker pink
+// $small-petal-color: #ff85b5; // lighter pink highlight
+// $petal-root-color: #b3004b; // deep magenta (was orange root)
+
+$large-petal-color: #a56bff; // main purple
+$mid-petal-color-1: #8f55ff; // slightly deeper
+$mid-petal-color-2: #6e3cff; // darker / more saturated
+$small-petal-color: #c19cff; // lighter highlight
+$petal-root-color: #3b007a; // deep violet root
 
 // =====================================================
 // === DIVISION WRAPPER (Dart Sass backwards compat) ===
@@ -427,6 +433,7 @@ xmlns='http://www.w3.org/2000/svg'%3E\
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .flower-scene--animate,
   .flower-scene--animate .flower-stem,
   .flower-scene--animate .flower-petals::before,
