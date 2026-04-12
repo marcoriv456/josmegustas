@@ -1,10 +1,15 @@
 <div class="relative w-screen h-screen overflow-hidden">
-  <app-grass
-    class="brightness-70 z-200 absolute top-0"
-    (load)="grass()?.start()"
-    (end)="flor()?.start()"
-  ></app-grass>
-  <app-flor class="brightness-70 z-100"></app-flor>
-  <app-particles class="absolute -z-100 top-0"></app-particles>
-  <app-gradient class="absolute -z-200 top-0"></app-gradient>
+  @if (active() == 1) {
+    <app-message-1></app-message-1>
+  }
+  @if (active() == 2) {
+    <app-grass
+      class="brightness-70 z-200 absolute top-0"
+      (load)="grass()?.start()"
+      (end)="flor()?.start()"
+    ></app-grass>
+    <app-flor class="brightness-70 z-100"></app-flor>
+    <app-particles class="absolute -z-100 top-0"></app-particles>
+    <app-gradient class="absolute -z-200 top-0"></app-gradient>
+  }
 </div>
