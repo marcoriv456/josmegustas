@@ -1,6 +1,28 @@
-<span class="font-simple">
-  Ninguna
-  <span class="font-caligraphy"> flor </span>
-  que yo pueda
-  <span class="font-programming"> programar </span>
-</span>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 left-0 ml-3 text-3xl">
+  @if (step() > 1) {
+    <span class="font-simple enter"> Ninguna </span>
+    <br />
+  }
+  @if (step() > 2) {
+    <span class="font-caligraphy enter"> flor </span>
+    <br />
+  }
+  @if (step() > 3) {
+    <span class="font-simple enter"> que yo pueda </span>
+    <br />
+  }
+  @if (step() > 4) {
+    <span class="font-programming enter"> programar </span>
+    <br />
+  }
+</div>
+
+@if (step() > 5) {
+  <div
+    class="absolute float size-screen left-1/2 -translate-x-1/2 bottom-10 text-lg text-center font-simple text-gray-500"
+  >
+    <span> Baja porfabor </span>
+    <br />
+    <span class="absolute -translate-y-1/2 left-1/2 -translate-x-1/2"> ⌄⌄⌄⌄⌄⌄⌄ </span>
+  </div>
+}

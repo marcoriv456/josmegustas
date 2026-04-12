@@ -46,10 +46,7 @@ export const flowerParticlesConfig: ISourceOptions = {
       direction: 'random',
       animation: {
         enable: true,
-        speed: {
-          min: 6,
-          max: 18,
-        },
+        speed: 15,
         sync: false,
       },
     },
@@ -61,17 +58,16 @@ export const flowerParticlesConfig: ISourceOptions = {
       // min: 0.8,
       // max: 2.2,
       // },
-      speed: 5,
       gravity: {
-        enable: true,
-        acceleration: 0.5,
+        enable: false,
         inverse: false,
-        maxSpeed: 3.8,
+        acceleration: 3.81,
+        maxSpeed: 10,
       },
-      drift: {
-        min: -0.02,
-        max: 0.02,
-      },
+      // drift: {
+      //   min: -0.2,
+      //   max: 0.2,
+      // },
       angle: {
         value: 90,
         offset: {
@@ -79,6 +75,10 @@ export const flowerParticlesConfig: ISourceOptions = {
           max: 12,
         },
       },
+      // outModes: {
+      //   default: 'out',
+      //   bottom: 'bounce',
+      // },
     },
   },
   // emitters: {

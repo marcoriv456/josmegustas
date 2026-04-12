@@ -1,0 +1,27 @@
+.enter {
+  animation: enter 0.5s ease-out;
+}
+
+.float {
+  animation: float 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes enter {
+  from {
+    transform: translateY(20px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-20px);
+  }
+}
